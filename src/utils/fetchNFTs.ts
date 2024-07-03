@@ -25,6 +25,10 @@ const GET_NFTS_FOR_ADDRESS = gql`
           name
           contractAddress
         }
+        lastSalePrice {
+          amount
+          amountUsd
+        }
         tokenId
         tokenUri
       }
@@ -32,7 +36,31 @@ const GET_NFTS_FOR_ADDRESS = gql`
   }
 `
 
-export const fetchNFTs = async (owner: string) => {
+export interface NFT {
+  id: string
+  name: string
+  description: string
+  media: {
+    url: string
+  }
+  owner: {
+    address: string
+  }
+  collection: {
+    name: string
+    contractAddress: string
+    tokenCounts: {
+      total: number
+    }
+  }
+  tokenId: string
+  lastSalePrice?: {
+    amount: number
+    amountUsd: number
+  }
+}
+
+export const fetchNFTs = async (owner: string): Promise<NFT[]> => {
   const client = new ApolloClient({
     uri: 'https://graphql.mainnet.stargaze-apis.com/graphql',
     cache: new InMemoryCache()
@@ -41,12 +69,22 @@ export const fetchNFTs = async (owner: string) => {
   try {
     const { data } = await client.query({
       query: GET_NFTS_FOR_ADDRESS,
-      variables: { owner, limit: 30, offset: 0 }
+      variables: { owner, limit: 50, offset: 0 }
     })
-    console.log(JSON.stringify(data.tokens))
-    return data.tokens
-  } catch (error) {
-    console.log('Failed to fetch NFTs:', JSON.stringify(error))
+
+    const nfts: NFT[] = [...data.tokens.tokens]
+    console.log('Fetched NFTs:', JSON.stringify(nfts, null, 2))
+
+    // Sort NFTs by lastSalePrice.amountUsd if it exists
+    const sortedNFTs = nfts.sort((a, b) => {
+      const aValue = a.lastSalePrice?.amountUsd ?? 0
+      const bValue = b.lastSalePrice?.amountUsd ?? 0
+      return bValue - aValue
+    })
+
+    return sortedNFTs
+  } catch (error: any) {
+    console.log('Failed to fetch NFTs:', error.message, JSON.stringify(error))
     return []
   }
 }
