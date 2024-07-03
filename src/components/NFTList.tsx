@@ -4,8 +4,9 @@ import { NFTCard } from './NFTCard'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-export const NFTList: React.FC<{ ownerAddress: string }> = ({
-  ownerAddress
+export const NFTList: React.FC<{ ownerAddress: string; numNfts: number }> = ({
+  ownerAddress,
+  numNfts
 }) => {
   const [nfts, setNfts] = useState<NFT[]>([])
   const [hiddenNfts, setHiddenNfts] = useState<NFT[]>([])
@@ -16,7 +17,7 @@ export const NFTList: React.FC<{ ownerAddress: string }> = ({
     const fetchAndSetNFTs = async () => {
       setLoading(true)
       try {
-        const fetchedNFTs = await fetchNFTs(ownerAddress)
+        const fetchedNFTs = await fetchNFTs(ownerAddress, numNfts)
         setNfts(fetchedNFTs)
       } catch (err) {
         setError('Failed to fetch NFTs')

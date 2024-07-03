@@ -5,6 +5,7 @@ const Home: React.FC = () => {
   const [ownerAddress, setOwnerAddress] = useState<string>(
     'stars1a605a9879cafvsql5l3r734kl6flak866gfppe'
   )
+  const [numNfts, setNumNfts] = useState<number>(50)
 
   return (
     <div style={{ color: '#fff', padding: '20px', backgroundColor: '#121212' }}>
@@ -27,7 +28,7 @@ const Home: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        <div style={{ fontSize: '1.5rem', marginRight: '5px' }}>Address:</div>
+        <div style={{ fontSize: '1.25rem', marginRight: '5px' }}>Address:</div>
         <input
           type="text"
           placeholder="Enter wallet address"
@@ -43,6 +44,22 @@ const Home: React.FC = () => {
             backgroundColor: '#fff'
           }}
         />
+        <div style={{ fontSize: '1.25rem', marginRight: '5px' }}>Num NFTs:</div>
+        <input
+          type="text"
+          placeholder="50"
+          value={numNfts}
+          onChange={e => setNumNfts(parseInt(e.target.value))}
+          style={{
+            padding: '10px',
+            fontSize: '16px',
+            borderRadius: '5px',
+            border: '2px solid #ccc',
+            width: '50px',
+            color: '#333',
+            backgroundColor: '#fff'
+          }}
+        />
         <button
           onClick={() => setOwnerAddress(ownerAddress)}
           style={{
@@ -54,13 +71,13 @@ const Home: React.FC = () => {
             color: '#fff',
             cursor: 'pointer',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-            marginLeft: '5px'
+            marginLeft: '10px'
           }}
         >
           Fetch NFTs
         </button>
       </div>
-      <NFTList ownerAddress={ownerAddress} />
+      <NFTList ownerAddress={ownerAddress} numNfts={numNfts} />
     </div>
   )
 }

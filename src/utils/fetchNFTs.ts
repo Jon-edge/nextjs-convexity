@@ -60,7 +60,10 @@ export interface NFT {
   }
 }
 
-export const fetchNFTs = async (owner: string): Promise<NFT[]> => {
+export const fetchNFTs = async (
+  owner: string,
+  numNfts: number
+): Promise<NFT[]> => {
   const client = new ApolloClient({
     uri: 'https://graphql.mainnet.stargaze-apis.com/graphql',
     cache: new InMemoryCache()
@@ -69,7 +72,7 @@ export const fetchNFTs = async (owner: string): Promise<NFT[]> => {
   try {
     const { data } = await client.query({
       query: GET_NFTS_FOR_ADDRESS,
-      variables: { owner, limit: 50, offset: 0 }
+      variables: { owner, limit: numNfts, offset: 0 }
     })
 
     const nfts: NFT[] = [...data.tokens.tokens]

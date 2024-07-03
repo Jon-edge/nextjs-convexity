@@ -1,3 +1,5 @@
+![image](https://github.com/Jon-edge/nextjs-convexity/assets/90650827/861363b1-8004-458d-a179-81d19fb49475)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

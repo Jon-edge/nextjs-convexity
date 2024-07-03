@@ -28,7 +28,7 @@ export const NFTCard = ({
 
   const [, drop] = useDrop<DragItem, void, void>({
     accept: 'card',
-    hover(item, monitor) {
+    hover(item: { index: number }, monitor: { getClientOffset: () => any }) {
       if (!ref.current) {
         return
       }
